@@ -9,7 +9,7 @@ class Invoice extends Model
 {
     use HasFactory;
 
-    //protected $fillable
+   protected $guarded = [];
 
     public function sale(){
         $this->belongsTo(Sale::class);

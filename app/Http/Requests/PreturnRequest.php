@@ -13,7 +13,7 @@ class PreturnRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class PreturnRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'product_id' => 'required',
+            'return_date' => 'required',
+            'user_id' => 'required',
         ];
     }
 }

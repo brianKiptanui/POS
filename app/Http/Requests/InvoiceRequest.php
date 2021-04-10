@@ -13,7 +13,7 @@ class InvoiceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class InvoiceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'sale_id' => 'required',
+            'invoice_number'=> 'required',
+            'user_id'=> 'required'
         ];
     }
 }

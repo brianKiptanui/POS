@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PreturnRequest;
+use App\Http\Resources\PreturnResource;
+use App\Models\Preturn;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PreturnController extends Controller
 {
@@ -13,7 +17,7 @@ class PreturnController extends Controller
      */
     public function index()
     {
-        //
+        return PreturnResource::collection(Preturn::all());
     }
 
     /**
@@ -22,9 +26,9 @@ class PreturnController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PreturnRequest $request)
     {
-        //
+        return Preturn::create($request->all());
     }
 
     /**
@@ -33,9 +37,9 @@ class PreturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Preturn $preturn)
     {
-        //
+        return new PreturnResource($preturn);
     }
 
     /**
@@ -45,9 +49,14 @@ class PreturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Preturn $preturn)
     {
-        //
+        $preturn->update($request->all());
+
+        return response()->json([
+            'success'=> true,
+            'data'=> 'Category details updated successfully'
+        ]);
     }
 
     /**
@@ -56,8 +65,10 @@ class PreturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Preturn $preturn)
     {
-        //
+        $preturn = Preturn::find($preturn);
+        Preturn::destroy($preturn);
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

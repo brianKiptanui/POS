@@ -9,6 +9,8 @@ class Preturn extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function products(){
         $this->hasMany(Product::class);
     }

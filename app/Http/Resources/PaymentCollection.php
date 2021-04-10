@@ -14,6 +14,11 @@ class PaymentCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return[
+            'invoice_id'=> $this->invoice_id,
+            'payment_method'=> $this->payment_method,
+            'transaction_id'=> $this->transaction_id,
+            'amount'=> $this->amount,
+        ];
     }
 }

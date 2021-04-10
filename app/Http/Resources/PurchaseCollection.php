@@ -14,6 +14,10 @@ class PurchaseCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'delivery_date' => $this->delivery_date,
+            'user_id' => $this->user_id,
+            'delivered' => $this->delivered,
+        ];
     }
 }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\PurchaseRequest;
+use App\Http\Resources\PurchaseResource;
+use App\Models\Purchase;
+use Symfony\Component\HttpFoundation\Response;
 
 class PurchaseController extends Controller
 {
@@ -13,7 +16,7 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        //
+        return PurchaseResource::collection(Purchase::all());
     }
 
     /**
@@ -22,9 +25,9 @@ class PurchaseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PurchaseRequest $request)
     {
-        //
+        return Purchase::create($request->all());
     }
 
     /**
@@ -33,9 +36,9 @@ class PurchaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Purchase $purchase)
     {
-        //
+        return new PurchaseResource($purchase);
     }
 
     /**
@@ -45,9 +48,14 @@ class PurchaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PurchaseRequest $request, Purchase $purchase)
     {
-        //
+        $purchase->update($request->all());
+
+        return response()->json([
+            'success'=> true,
+            'data'=> 'Category details updated successfully'
+        ]);
     }
 
     /**
@@ -56,8 +64,10 @@ class PurchaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Purchase $purchase)
     {
-        //
+        $purchase = Purchase::find($purchase);
+        Purchase::destroy($purchase);
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

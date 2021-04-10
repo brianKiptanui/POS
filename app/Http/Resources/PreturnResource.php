@@ -14,6 +14,11 @@ class PreturnResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'product_id' => $this->product_id,
+            'return_date' => $this->return_date,
+            'description' => $this->description,
+            'user_id' => $this->user_id,
+        ];
     }
 }

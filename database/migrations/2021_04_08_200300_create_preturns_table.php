@@ -20,7 +20,7 @@ class CreatePreturnsTable extends Migration
             $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-        });
+        }); 
     }
 
     /**

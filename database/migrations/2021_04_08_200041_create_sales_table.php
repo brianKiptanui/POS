@@ -23,7 +23,7 @@ class CreateSalesTable extends Migration
             $table->integer('total_discount')->default(0);
             $table->integer('total_tax')->default(0);
             $table->integer('total_amount')->default(0);
-            $table->timestamps();
+            $table->timestamps(); 
         });
     }
 

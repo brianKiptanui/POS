@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvoiceRequest;
+use App\Http\Resources\InvoiceResource;
+use App\Models\Invoice;
+use App\Models\Purchase;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class InvoiceController extends Controller
 {
@@ -13,7 +18,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        return InvoiceResource::collection(Invoice::all());
     }
 
     /**
@@ -22,9 +27,9 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InvoiceRequest $request)
     {
-        //
+        return Invoice::create($request->all());
     }
 
     /**
@@ -33,9 +38,9 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Invoice $invoice)
     {
-        //
+        return new InvoiceResource($invoice);
     }
 
     /**
@@ -45,9 +50,14 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(InvoiceRequest $request, Invoice $invoice)
     {
-        //
+        $invoice->update($request->all());
+
+        return response()->json([
+            'success'=> true,
+            'data'=> 'Category details updated successfully'
+        ]);
     }
 
     /**
@@ -56,8 +66,10 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Invoice $invoice)
     {
-        //
+        $invoice = Invoice::find($invoice);
+        Invoice::destroy($invoice);
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
