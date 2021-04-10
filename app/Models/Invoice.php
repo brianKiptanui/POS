@@ -9,6 +9,8 @@ class Invoice extends Model
 {
     use HasFactory;
 
+    //protected $fillable
+
     public function sale(){
         $this->belongsTo(Sale::class);
     }
