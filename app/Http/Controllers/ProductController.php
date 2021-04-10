@@ -7,6 +7,7 @@ use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
@@ -26,7 +27,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         return Product::create($request->all());
     }
@@ -52,19 +53,12 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        $product= category()->update($request->all());
+        $product->update($request->all());
         return response()->json([
             'success'=> true,
-            'data'=> 'Lease details updated successfully'
+            'data'=> 'Product details updated successfully'
         ]);
-//        $product = Product::where('category_id',$category)
-//            ->where('id', $product)->find($product);
-//        $product->update($request->all());
-//
-//        return response()->json([
-//            'success'=> true,
-//            'data'=> 'Product details updated successfully'
-//        ]);
+
     }
 
     /**
@@ -75,8 +69,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $category = Category::find($product);
-        Category::destroy($product);
+        $product = Product::find($product);
+        Product::destroy($product);
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }
