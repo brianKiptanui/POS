@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Resources\PurchaseResource;
+use App\Models\Product;
 use App\Models\Purchase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,7 +28,35 @@ class PurchaseController extends Controller
      */
     public function store(PurchaseRequest $request)
     {
-        return Purchase::create($request->all());
+        $purchase = Purchase::create($request->all());
+
+        $data = $request->all();
+
+
+        $dat = $data['product_id'];
+        $qty = $request->get('quantity');
+
+        //attach sale with there products and quantities
+        $attach_data = [];
+
+        for ($i = 0; $i < count(array($dat)); $i++) {
+            $attach_data[$dat[$i]] = ['quantity' => $qty[$i]];
+        }
+
+        $purchase->products()->attach($attach_data);
+
+
+        //check products units and add quntities that is purchased
+
+        for ($i = 0; $i < count(array($dat)); $i++) {
+            $product = Product::find($dat[$i]);
+            $product->units = $product->units + ($qty[$i]);
+            $product->save();
+        }
+
+        return response()->json([
+            'data'=> $purchase
+        ]);
     }
 
     /**
@@ -50,7 +79,38 @@ class PurchaseController extends Controller
      */
     public function update(PurchaseRequest $request, Purchase $purchase)
     {
+        foreach ($purchase->products as $key => $product) {
+            $product->update([
+                'units' => $product->units - $product->pivot->quantity
+            ]);
+        }
+        $purchase->delete();
+
         $purchase->update($request->all());
+
+        $data = $request->all();
+
+
+        $dat = $data['product_id'];
+        $qty = $request->get('quantity');
+
+        //attach sale with there products and quantities
+        $attach_data = [];
+
+        for ($i = 0; $i < count(array($dat)); $i++) {
+            $attach_data[$dat[$i]] = ['quantity' => $qty[$i]];
+        }
+
+        $purchase->products()->attach($attach_data);
+
+
+        //check products units and add quntities that is purchased
+
+        for ($i = 0; $i < count(array($dat)); $i++) {
+            $product = Product::find($dat[$i]);
+            $product->units = $product->units + ($qty[$i]);
+            $product->save();
+        }
 
         return response()->json([
             'success'=> true,

@@ -27,6 +27,8 @@ class PurchaseRequest extends FormRequest
             'user_id'=> 'required',
             'delivery_date'=> 'required',
             'delivered'=> 'required',
+            'product_id' => 'required',
+            'quantity' => 'required',
         ];
     }
 }

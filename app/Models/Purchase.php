@@ -10,4 +10,11 @@ class Purchase extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+ 
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_purchase', 'purchase_id', 'product_id')->withPivot('quantity');
+    }
 }
